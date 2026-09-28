@@ -1,0 +1,437 @@
+// Your own CSS goes here. It is loaded on every page, after the theme's styles,
+// so anything you write here overrides the theme. Plain CSS works fine.
+// Palette, font and layout variables ($nugw-violet etc.) are defined in _sass/custom/setup.scss.
+
+// ---- Typography ----
+// The theme sets heading sizes with !important, so ours need it too to take effect.
+.site-title {
+  font-family: $nugw-serif;
+  font-size: 1.2rem !important;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+// Page titles: large display serif. DM Serif Display comes in a single weight,
+// which is already heavy, so it is not bolded further (fake bold looks smudged).
+.main-content h1 {
+  font-family: $nugw-serif;
+  font-weight: 500;
+  font-size: clamp(2.5rem, 5vw, 3.75rem) !important;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  margin-bottom: 1.75rem;
+
+  // Short mauve rule under each page title
+  &::after {
+    content: "";
+    display: block;
+    width: 3rem;
+    height: 3px;
+    margin-top: 1.25rem;
+    background: $nugw-mauve;
+  }
+}
+
+.main-content h2,
+.main-content h3,
+.main-content h4,
+.main-content h5,
+.main-content h6 {
+  font-family: $nugw-heading-sans;
+}
+
+.main-content h2 {
+  font-weight: 600;
+  font-size: clamp(1.15rem, 1.8vw, 1.3rem) !important; // modest, since many h2s are full questions
+  line-height: 1.45;
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+}
+
+.main-content h3 {
+  font-weight: 500;
+  font-size: 1.2rem !important;
+  line-height: 1.4;
+  margin-top: 2rem;
+}
+
+// ---- Editorial layout ----
+// Text sits in a centered reading column; images break out to the full width
+// of the content area, edge to edge, with text flowing below.
+.main-content main > * {
+  max-width: $nugw-measure;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.main-content main > .card-row {
+  max-width: none;
+}
+
+// A standalone image (an <img> on its own line in Markdown), a <figure>,
+// or anything with class="full-bleed"
+.main-content main > p:has(> img:only-child),
+.main-content main > figure,
+.main-content main > .full-bleed {
+  max-width: none;
+  margin: 2.5rem (-$gutter-spacing-sm);
+
+  @include mq(md) {
+    margin-right: -$gutter-spacing;
+    margin-left: -$gutter-spacing;
+  }
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    object-position: 50% 20%; // keep faces in frame when cropping portraits
+  }
+}
+
+.main-content main > figure figcaption {
+  max-width: $nugw-measure;
+  margin: 0.75rem auto 0;
+  padding: 0 $gutter-spacing-sm;
+  font-size: 0.875rem;
+  color: $nugw-violet;
+}
+
+// ---- Candidate cards (used on the /examples/ page) ----
+.card-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.card {
+  flex: 1 1 200px;
+  padding: 1rem 1.25rem;
+  border: 1px solid mix($nugw-sage, $white, 60%);
+  border-top: 4px solid $nugw-mauve;
+  border-radius: 8px;
+  background: $white;
+  transition: transform 0.15s, box-shadow 0.15s;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba($nugw-indigo, 0.15);
+  }
+
+  h3 {
+    margin-top: 0;
+  }
+}
+
+// ---- Collapsible Q&A sections (<details>) ----
+details {
+  margin: 0.75rem 0;
+  padding: 0.75rem 1rem;
+  border-left: 4px solid $nugw-mauve;
+  background: mix($nugw-mist, $white, 45%);
+  border-radius: 4px;
+
+  summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: $nugw-indigo;
+  }
+
+  &[open] summary {
+    margin-bottom: 0.5rem;
+  }
+}
+
+// ---- Tabs (driven by assets/js/custom.js) ----
+.tabs {
+  margin: 1.5rem 0;
+}
+
+.tab-buttons {
+  display: flex;
+  gap: 0.25rem;
+  border-bottom: 2px solid mix($nugw-sage, $white, 60%);
+
+  button {
+    padding: 0.5rem 1rem;
+    border: none;
+    background: none;
+    font: inherit;
+    color: $nugw-violet;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+
+    &.active {
+      border-bottom-color: $nugw-indigo;
+      color: $nugw-indigo;
+      font-weight: 600;
+    }
+  }
+}
+
+.tab-panel {
+  padding: 1rem 0;
+}
+
+// ---- Scroll effects (driven by assets/js/custom.js) ----
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(to right, $nugw-mauve, $nugw-indigo);
+  transform: scaleX(0);
+  transform-origin: left;
+  pointer-events: none;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+
+  &.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+// Cards in a row arrive one after another
+.card-row .card.reveal:nth-child(2) { transition-delay: 0.12s; }
+.card-row .card.reveal:nth-child(3) { transition-delay: 0.24s; }
+
+@keyframes nugw-rise {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes nugw-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes nugw-nudge {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+// ---- Sidebar hover ----
+// On devices with a mouse, hovering a section opens its submenu and tints the link.
+.site-nav .nav-list-link {
+  transition: color 0.2s ease, box-shadow 0.2s ease;
+}
+
+@media (hover: hover) {
+  .site-nav .nav-list-link:hover {
+    color: $nugw-indigo;
+    box-shadow: inset 3px 0 0 $nugw-mauve;
+  }
+
+  .site-nav .nav-list .nav-list-item:hover > .nav-list {
+    display: block;
+  }
+
+  .site-nav .nav-list .nav-list-item:not(.active):hover > .nav-list {
+    animation: nugw-drop 0.25s ease both;
+  }
+
+  .site-nav .nav-list .nav-list-item:hover > .nav-list-expander svg {
+    transform: rotate(-90deg);
+  }
+
+  .site-nav .nav-list-expander svg {
+    transition: transform 0.2s ease;
+  }
+}
+
+// ---- Home page ----
+// Splash: the big title arrives first, then the smaller line under it.
+.hero {
+  display: flex;
+  flex-direction: column;
+  padding-top: 0.5rem;
+
+  h1 {
+    font-size: clamp(2.75rem, 6vw, 4.5rem) !important;
+    animation: nugw-rise 0.9s ease both;
+  }
+}
+
+.hero-lede {
+  max-width: 60rem;
+  font-family: $nugw-heading-sans;
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  line-height: 1.5;
+  color: $nugw-violet;
+  animation: nugw-rise 0.9s 0.6s ease both;
+}
+
+.hero-scroll {
+  align-self: flex-start;
+  margin-top: 0.25rem;
+  font-size: 1.5rem;
+  color: $nugw-mauve;
+  text-decoration: none;
+  animation: nugw-rise 0.9s 1.2s ease both, nugw-nudge 2s 2.1s ease-in-out infinite;
+}
+
+// Safety net: on systems with always-visible scrollbars, 100vw is a few pixels
+// wider than the page, so clip that sliver instead of showing a sideways scrollbar.
+body {
+  overflow-x: clip;
+}
+
+// Indigo block introducing the three candidates
+.band {
+  position: relative;
+  isolation: isolate;
+  padding: 3.5rem $gutter-spacing-sm;
+
+  @include mq(md) {
+    padding: 4rem $gutter-spacing;
+  }
+
+  // The indigo background runs past the content column to the right edge of the
+  // window (it already meets the sidebar on the left); the cards stay aligned
+  // with the text. The extension equals the empty margin the theme leaves to the
+  // right of the content column on wide screens (zero on narrower ones).
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    // stylelint-disable-next-line function-name-case -- Max() keeps Sass from evaluating it
+    right: calc(-1 * Max(0px, (100vw - #{$nav-width + $content-width}) / 2));
+    z-index: -1;
+    background: $nugw-indigo;
+  }
+
+  .eyebrow {
+    margin: 0 0 1.5rem;
+    font-family: $nugw-heading-sans;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: $nugw-mist;
+  }
+
+  .card-row {
+    margin: 0;
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 1.5rem;
+    border: 1px solid rgba($white, 0.15);
+    border-top: 4px solid $nugw-mauve;
+    background: rgba($white, 0.05);
+    color: $white;
+    text-decoration: none;
+
+    &:hover {
+      background: rgba($white, 0.1);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+    }
+  }
+}
+
+.card-role {
+  font-family: $nugw-heading-sans;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: $nugw-mist;
+}
+
+.card-name {
+  font-family: $nugw-serif;
+  font-size: 2.25rem;
+  line-height: 1.1;
+}
+
+.card-more {
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  color: $nugw-mist;
+}
+
+// Contact list: each email slides in, one after another, once scrolled to
+.contact {
+  padding: 1rem 0 3rem;
+}
+
+.main-content .contact-list {
+  padding: 0;
+  margin: 1.5rem 0 0;
+  list-style: none;
+
+  li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.5rem;
+    align-items: baseline;
+    padding: 1rem 0;
+    margin: 0;
+    border-top: 1px solid mix($nugw-sage, $white, 60%);
+
+    &::before {
+      display: none; // hide the theme's list bullet
+    }
+  }
+
+  span {
+    min-width: 6rem;
+    font-family: $nugw-heading-sans;
+    font-weight: 600;
+    color: $nugw-indigo;
+  }
+}
+
+.contact.reveal .contact-list li {
+  opacity: 0;
+  transform: translateX(-12px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.contact.is-visible .contact-list li {
+  opacity: 1;
+  transform: none;
+
+  &:nth-child(1) { transition-delay: 0.3s; }
+  &:nth-child(2) { transition-delay: 0.45s; }
+  &:nth-child(3) { transition-delay: 0.6s; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero h1,
+  .hero-lede,
+  .hero-scroll,
+  .site-nav .nav-list .nav-list-item:hover > .nav-list {
+    animation: none !important;
+  }
+}

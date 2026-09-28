@@ -1,0 +1,18 @@
+// Site palette. Change a color here and it updates everywhere.
+$nugw-mist: #dce3f1;   // pale periwinkle
+$nugw-sage: #bac6c6;   // grey-sage
+$nugw-mauve: #9c82a4;  // dusty mauve
+$nugw-violet: #68527d; // muted purple
+$nugw-indigo: #3e3a5d; // deep indigo
+$nugw-ink: #2a2738;    // body text: near-black with a hint of indigo
+
+// Fonts (loaded from Google Fonts in _includes/head_custom.html)
+$nugw-serif: "DM Serif Display", georgia, "Times New Roman", serif; // page titles
+$nugw-heading-sans: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif; // subheadings
+$body-font-family: "Work Sans", system-ui, -apple-system, "Segoe UI", sans-serif; // body text
+$body-line-height: 1.65;
+
+// Layout: a wider content area so images can run large.
+// Text is held to a narrower reading column in custom.scss ($nugw-measure).
+$content-width: 60rem;
+$nugw-measure: 42rem;

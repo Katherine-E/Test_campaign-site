@@ -1,0 +1,13 @@
+// Maps the palette in _sass/custom/setup.scss onto the theme's color roles.
+// Enabled by `color_scheme: nugw` in _config.yml.
+$color-scheme: light;
+$body-background-color: $white;
+$body-heading-color: $nugw-indigo;
+$body-text-color: $nugw-ink;
+$link-color: $nugw-violet;
+$nav-child-link-color: $nugw-ink;
+$sidebar-color: mix($nugw-mist, $white, 70%);
+$btn-primary-color: $nugw-violet;
+$border-color: mix($nugw-sage, $white, 60%);
+$feedback-color: darken($sidebar-color, 3%);
+$search-result-preview-color: $nugw-violet;
